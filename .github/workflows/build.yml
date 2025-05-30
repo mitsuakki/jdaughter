@@ -23,11 +23,9 @@ jobs:
 
     - name: Build shared library
       run: |
-        mkdir -p build
-        gcc -Wall -O2 -fPIC -shared \
-            -Iinclude \
-            src/jdaughter.cpp \
-            -o build/libjdaughter.so
+        mkdir -p build && cd build
+        cmake -DCMAKE_BUILD_TYPE=Release ..
+        cmake --build .
 
     - name: Upload shared library
       uses: actions/upload-artifact@v4.3.0
