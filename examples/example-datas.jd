@@ -1,0 +1,27 @@
+{
+    // List of users in the system
+    "users": [
+        {
+            "id": "69", // Unique user ID
+            "name": "Alice",
+            "email": "alice@example.com",
+            "role": "admin" // Has full access
+        },
+        {
+            "id": "70",
+            "name": "Bob",
+            "email": "bob@example.com",
+            "role": "user" // Regular user
+        },
+        {
+            /* 
+             * Charlie is a moderator.
+             * Moderators have limited admin privileges.
+             */
+            "id": "71",
+            "name": "Charlie",
+            "email": "charlie@example.com",
+            "role": "moderator"
+        }
+    ]
+}
