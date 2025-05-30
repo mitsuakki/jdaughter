@@ -1,0 +1,32 @@
+name: Build Library
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install build tools
+      run: sudo apt-get update && sudo apt-get install -y gcc
+
+    - name: Build shared library
+      run: |
+        mkdir -p build
+        gcc -Wall -O2 -fPIC -shared \
+            -Iinclude \
+            src/jdaughter.cpp \
+            -o build/libjdaughter.so
+
+    - name: Upload shared library
+      uses: actions/upload-artifact@v3
+      with:
+        name: libjdaughter
+        path: build/libjdaughter.so
