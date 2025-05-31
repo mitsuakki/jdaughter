@@ -11,17 +11,29 @@ A lightweight C++ header-only wrapper around [nlohmann/json](https://github.com/
 ## Usage
 
 ```cpp
-#include "jdaughter.hpp"
 #include <iostream>
+#include <string>
+#include "jdaughter.hpp"
 
-int main() {
-    std::string json_with_comments = R"(
-        {
-            // Comment here
-            "key": "value" /* another comment */
-        }
-    )";
+int main(int argc, char* argv[]) {
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0] << " <json_file>" << std::endl;
+        return 1;
+    }
 
-    auto j = json_comment::parse(json_with_comments);
-    std::cout << j.dump(4) << std::endl;
+    std::string filename = argv[1];
+    auto j = jdaughter::parse_file(filename);
+    if (j.is_null()) {
+        std::cerr << "Error parsing JSON: Could not open file: " << filename << std::endl;
+        return 1;
+    }
+
+    for (const auto& user : j.at("users")) {
+        std::cout << "- ID: " << user.at("id").get<std::string>() << "\n";
+        std::cout << "  Name: " << user.at("name").get<std::string>() << "\n";
+        std::cout << "  Email: " << user.at("email").get<std::string>() << "\n";
+        std::cout << "  Role: " << user.at("role").get<std::string>() << "\n\n";
+    }
+
+    return 0;
 }
